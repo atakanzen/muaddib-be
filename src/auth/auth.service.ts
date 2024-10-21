@@ -1,6 +1,6 @@
 import { DBType } from '@/database/schema/_schema';
 import { lower } from '@/database/schema/_utils';
-import { users } from '@/database/schema/users';
+import { users } from '@/database/schema/users/users';
 import { ConflictException, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import argon2 from 'argon2';
