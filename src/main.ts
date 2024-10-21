@@ -14,9 +14,13 @@ async function bootstrap() {
         }
     );
 
-    app.register(compression, { encodings: ['gzip', 'deflate', 'br'] });
+    // Register plugins
+    await app.register(compression, { encodings: ['gzip', 'deflate', 'br'] });
 
+    // Validation
     app.useGlobalPipes(new ValidationPipe());
+
     await app.listen(3000);
 }
+
 bootstrap();
