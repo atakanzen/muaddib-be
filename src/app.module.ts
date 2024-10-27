@@ -9,12 +9,14 @@ const envModule = ConfigModule.forRoot({
 
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
+import { DecisionTreeModule } from './decision-tree/decision-tree.module';
 
 @Module({
   imports: [
     envModule,
     DatabaseModule,
-    AuthModule
+    AuthModule,
+    DecisionTreeModule
   ]
 })
 export class AppModule { }

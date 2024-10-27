@@ -15,6 +15,13 @@
       "when": 1729519674657,
       "tag": "0001_decision_trees",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729603712984,
+      "tag": "0002_decision_trees_defaults",
+      "breakpoints": true
     }
   ]
 }

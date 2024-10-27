@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
-import compression from '@fastify/compress';
 
 
 async function bootstrap() {
@@ -13,9 +12,6 @@ async function bootstrap() {
             cors: true
         }
     );
-
-    // Register plugins
-    await app.register(compression, { encodings: ['gzip', 'deflate', 'br'] });
 
     // Validation
     app.useGlobalPipes(new ValidationPipe());
