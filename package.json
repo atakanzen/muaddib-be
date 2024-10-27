@@ -17,10 +17,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "drizzle-gen:dev": "drizzle-kit generate --config=drizzle-dev.config.ts",
+    "drizzle-gen:prod": "drizzle-kit generate --config=drizzle-prod.config.ts"
   },
   "dependencies": {
-    "@fastify/compress": "^8.0.1",
     "@knaadh/nestjs-drizzle-pg": "^1.0.0",
     "@nestjs/common": "^10.4.4",
     "@nestjs/config": "^3.2.3",
