@@ -1,8 +1,10 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { LoginUserDTO } from './dto/login-user.dto';
 import { Public } from './decorators/public.decorator';
+import { ChangePasswordDTO } from './dto/change-password.dto';
+import { AuthUser } from './decorators/auth-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -34,5 +36,18 @@ export class AuthController {
                 username: username
             })
         };
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @Put('change-password')
+    async changePassword(
+        @Body() { currentPassword, newPassword }: ChangePasswordDTO,
+        @AuthUser() user: AuthUser
+    ) {
+        await this.authService.changePassword({
+            userId: user.sub,
+            currentPassword: currentPassword,
+            newPassword: newPassword
+        });
     }
 }
