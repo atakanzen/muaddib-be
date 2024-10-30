@@ -1,6 +1,5 @@
 import { IsOptional, MaxLength, MinLength } from 'class-validator';
-import { DecisionTree } from '../types/decision-tree.types';
-
+import { RawDecisionTree } from '../types/decision-tree.types';
 
 export class UpdateDecisionTreeDTO {
     @IsOptional()
@@ -9,5 +8,5 @@ export class UpdateDecisionTreeDTO {
     "name": string;
 
     @IsOptional()
-    "tree": DecisionTree
+    "tree": RawDecisionTree
 }

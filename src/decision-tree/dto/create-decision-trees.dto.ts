@@ -1,5 +1,5 @@
 import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
-import { DecisionTree } from '../types/decision-tree.types';
+import { RawDecisionTree } from '../types/decision-tree.types';
 
 export class CreateDecisionTreeDTO {
     @IsNotEmpty()
@@ -7,5 +7,5 @@ export class CreateDecisionTreeDTO {
     @MaxLength(128)
     "name": string;
 
-    "tree": DecisionTree
+    "tree": RawDecisionTree
 }

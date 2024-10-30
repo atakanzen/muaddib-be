@@ -1,16 +1,16 @@
-import { DeepPartial } from "@/lib/types/deep-partial";
+import { DeepPartial } from "@/lib/common/types/deep-partial";
 import { isArray, isBoolean, isNumber, isObject, isString } from "class-validator";
-import { DecisionTree, DecisionTreeNode, DecisionTreeNodeType, DecisionTreeEdge, DecisionTreeViewport } from "../types/decision-tree.types";
+import { RawDecisionTree, RawDecisionTreeNode, DecisionTreeNodeType, RawDecisionTreeEdge, RawDecisionTreeViewport } from "../types/decision-tree.types";
 
 const decisionTreeNodeTypes = Object.values(DecisionTreeNodeType);
 
-export function validateDecisionTree(tree: any): { error: string, validatedTree?: DecisionTree } {
-    if (!isObject<DeepPartial<DecisionTree>>(tree)) {
+export function validateDecisionTree(tree: any): { error: string, validatedTree?: RawDecisionTree } {
+    if (!isObject<DeepPartial<RawDecisionTree>>(tree)) {
         return { error: 'Decision tree must be an object' };
     }
 
     // Output tree structure for stripped data
-    const validatedTree: DecisionTree = {
+    const validatedTree: RawDecisionTree = {
         nodes: [],
         edges: [],
         viewport: {
@@ -62,7 +62,7 @@ export function validateDecisionTree(tree: any): { error: string, validatedTree?
 // Pushes the nodes to a outputArray to get rid of invalid data
 function validateNodes({ nodes, outputArray }: {
     nodes: any;
-    outputArray: DecisionTreeNode[];
+    outputArray: RawDecisionTreeNode[];
 }): { error: string, nodeIds?: Set<string> } {
     if (!isArray(nodes)) {
         return { error: 'Decision tree "nodes" must be an array' }
@@ -71,7 +71,7 @@ function validateNodes({ nodes, outputArray }: {
     const nodeIds = new Set<string>();
 
     for (const node of nodes) {
-        if (!isObject<DeepPartial<DecisionTreeNode>>(node)) {
+        if (!isObject<DeepPartial<RawDecisionTreeNode>>(node)) {
             return { error: 'Decision tree "nodes" elements must all be objects' }
         }
 
@@ -139,7 +139,7 @@ function validateNodes({ nodes, outputArray }: {
 function validateEdges({ edges, nodeIds, outputArray }: {
     edges: any;
     nodeIds: Set<string>;
-    outputArray: DecisionTreeEdge[];
+    outputArray: RawDecisionTreeEdge[];
 }) {
     const edgeIds = new Set<string>();
 
@@ -148,7 +148,7 @@ function validateEdges({ edges, nodeIds, outputArray }: {
     }
 
     for (const edge of edges) {
-        if (!isObject<DeepPartial<DecisionTreeEdge>>(edge)) {
+        if (!isObject<DeepPartial<RawDecisionTreeEdge>>(edge)) {
             return { error: 'Decision tree "edges" elements must all be objects' }
         }
 
@@ -199,9 +199,9 @@ function validateEdges({ edges, nodeIds, outputArray }: {
 
 function validateViewport({ viewport, outputObject }: {
     viewport: any;
-    outputObject: DecisionTreeViewport;
+    outputObject: RawDecisionTreeViewport;
 }) {
-    if (!isObject<DeepPartial<DecisionTreeViewport>>(viewport)) {
+    if (!isObject<DeepPartial<RawDecisionTreeViewport>>(viewport)) {
         return { error: 'Decision tree "viewport" must be an object' }
     }
 

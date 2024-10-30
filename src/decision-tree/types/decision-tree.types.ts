@@ -1,10 +1,10 @@
-export type DecisionTree = {
-    nodes: DecisionTreeNode[],
-    edges: DecisionTreeEdge[],
-    viewport: DecisionTreeViewport
+export type RawDecisionTree = {
+    nodes: RawDecisionTreeNode[],
+    edges: RawDecisionTreeEdge[],
+    viewport: RawDecisionTreeViewport
 };
 
-export type DecisionTreeNode = {
+export type RawDecisionTreeNode = {
     id: string,
     type: DecisionTreeNodeType,
     data: {},
@@ -24,14 +24,14 @@ export enum DecisionTreeNodeType {
     endpointNode = 'endpointNode'
 };
 
-export type DecisionTreeEdge = {
+export type RawDecisionTreeEdge = {
     id: string,
     source: string,
     target: string,
     animated?: boolean
 };
 
-export type DecisionTreeViewport = {
+export type RawDecisionTreeViewport = {
     x: number,
     y: number,
     zoom: number

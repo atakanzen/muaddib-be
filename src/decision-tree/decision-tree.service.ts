@@ -2,7 +2,7 @@ import { DBType } from '@/database/schema/_schema';
 import { decisionTrees } from '@/database/schema/decision-trees/decision-trees';
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { and, desc, eq } from 'drizzle-orm';
-import { DecisionTree } from './types/decision-tree.types';
+import { RawDecisionTree } from './types/decision-tree.types';
 
 @Injectable()
 export class DecisionTreeService {
@@ -53,7 +53,7 @@ export class DecisionTreeService {
             .orderBy(desc(decisionTrees.updatedAt));
     }
 
-    async insert(values: { userId: number, name: string, tree: DecisionTree }) {
+    async insert(values: { userId: number, name: string, tree: RawDecisionTree }) {
         const trees = await this.db.insert(decisionTrees)
             .values(values)
             .returning({
@@ -68,7 +68,7 @@ export class DecisionTreeService {
         treeId: string;
         values: {
             name?: string;
-            tree?: DecisionTree;
+            tree?: RawDecisionTree;
         };
     }) {
         if (values.name === undefined && values.tree === undefined) {
