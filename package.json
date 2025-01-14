@@ -19,7 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "drizzle-gen:dev": "drizzle-kit generate --config=drizzle-dev.config.ts",
-    "drizzle-gen:prod": "drizzle-kit generate --config=drizzle-prod.config.ts"
+    "drizzle-gen:prod": "drizzle-kit generate --config=drizzle-prod.config.ts",
+    "drizzle-mig:dev": "drizzle-kit migrate --config=drizzle-dev.config.ts"
   },
   "dependencies": {
     "@fastify/static": "^7.0.4",
