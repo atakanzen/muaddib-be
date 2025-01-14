@@ -9,8 +9,8 @@ import { dbSchema } from './schema/_schema';
             pg: {
                 connection: 'client',
                 config: {
-                    connectionString: ['development', 'test'].some(e => e === process.env.NODE_ENV)
-                        ? process.env.POSTGRES_URL_DEV
+                    connectionString: process.env.NODE_ENV === 'test'
+                        ? process.env.POSTGRES_URL_TEST
                         : process.env.POSTGRES_URL
                 },
             },
