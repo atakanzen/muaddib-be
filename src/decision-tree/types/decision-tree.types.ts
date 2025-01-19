@@ -37,6 +37,7 @@ export type RawDecisionTreeEdge = {
     target: string;
     animated?: boolean;
     data?: Record<string, unknown>;
+    type?: DecisionTreeEdgeType;
 };
 
 export type RawDecisionTreeViewport = {
