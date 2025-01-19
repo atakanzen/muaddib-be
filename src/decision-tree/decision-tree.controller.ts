@@ -69,7 +69,6 @@ export class DecisionTreeController {
         @Body() dto: UpdateDecisionTreeDTO,
         @AuthUser() user: AuthUser,
     ) {
-        console.log('CONTROLLER EDGES ', dto.tree.edges);
         const found = await this.service.update({
             userId: user.sub,
             treeId: treeId,

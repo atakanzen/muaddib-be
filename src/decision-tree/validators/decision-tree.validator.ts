@@ -54,8 +54,6 @@ export function validateDecisionTree(tree: unknown): {
         outputArray: validatedTree.edges,
     });
 
-    console.log('VALIDATED TREE EDGES: ', validatedTree.edges);
-
     if (edgeValidation?.error) {
         return { error: edgeValidation.error };
     }

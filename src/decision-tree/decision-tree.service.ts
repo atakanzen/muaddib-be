@@ -104,8 +104,6 @@ export class DecisionTreeService {
                 tree: decisionTrees.tree,
             });
 
-        console.log('AFFECTED EDGES ', affected[0].tree.edges);
-
         return Boolean(affected.length);
     }
 
