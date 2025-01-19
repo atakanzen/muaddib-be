@@ -1,4 +1,9 @@
-import { ArgumentMetadata, BadRequestException, Injectable, InternalServerErrorException, PipeTransform } from '@nestjs/common';
+import {
+    ArgumentMetadata,
+    BadRequestException,
+    Injectable,
+    PipeTransform,
+} from '@nestjs/common';
 import { validateDecisionTree } from './validators/decision-tree.validator';
 
 interface ValidationOptions {
@@ -7,18 +12,20 @@ interface ValidationOptions {
 
 @Injectable()
 export class DecisionTreePipe implements PipeTransform {
-    constructor(private options: ValidationOptions = {}) { }
+    constructor(private options: ValidationOptions = {}) {}
 
     transform(value: any, metadata: ArgumentMetadata) {
         if (metadata.type !== 'body') {
             return value;
         }
 
-        const tree = value?.tree as string | undefined;
+        const tree = value?.tree as unknown | undefined;
 
         if (tree === undefined) {
             if (this.options.required) {
-                throw new BadRequestException('The "tree" field must have a value');
+                throw new BadRequestException(
+                    'The "tree" field must have a value',
+                );
             }
 
             return value;
@@ -32,7 +39,7 @@ export class DecisionTreePipe implements PipeTransform {
         }
 
         value.tree = validation.validatedTree;
-        
+
         return value;
     }
 }

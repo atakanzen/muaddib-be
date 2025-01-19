@@ -1,39 +1,47 @@
 export type RawDecisionTree = {
-    nodes: RawDecisionTreeNode[],
-    edges: RawDecisionTreeEdge[],
-    viewport: RawDecisionTreeViewport
+    nodes: RawDecisionTreeNode[];
+    edges: RawDecisionTreeEdge[];
+    viewport: RawDecisionTreeViewport;
 };
 
 export type RawDecisionTreeNode = {
-    id: string,
-    type: DecisionTreeNodeType,
-    data: {},
+    id: string;
+    type: DecisionTreeNodeType;
+    data: Record<string, unknown>;
     position: {
-        x: number,
-        y: number
-    },
+        x: number;
+        y: number;
+    };
     measured: {
-        width: number,
-        height: number
-    }
+        width: number;
+        height: number;
+    };
 };
 
 export enum DecisionTreeNodeType {
     decisionNode = 'decisionNode',
     chanceNode = 'chanceNode',
-    endpointNode = 'endpointNode'
-};
+    endpointNode = 'endpointNode',
+    textNode = 'textNode',
+}
+
+export enum DecisionTreeEdgeType {
+    decisionEdge = 'decisionEdge',
+    chanceToEndpointEdge = 'chanceToEndpointEdge',
+    chanceToChanceEdge = 'chanceToChanceEdge',
+}
 
 export type RawDecisionTreeEdge = {
-    id: string,
-    source: string,
-    target: string,
-    animated?: boolean
+    id: string;
+    source: string;
+    target: string;
+    animated?: boolean;
+    data?: Record<string, unknown>;
+    type?: DecisionTreeEdgeType;
 };
 
 export type RawDecisionTreeViewport = {
-    x: number,
-    y: number,
-    zoom: number
+    x: number;
+    y: number;
+    zoom: number;
 };
-
