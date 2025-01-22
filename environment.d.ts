@@ -8,6 +8,7 @@ export declare global {
             GCP_SQL_USER: string;
             GCP_SQL_PWD: string;
             GCP_SQL_DB_NAME: string;
+            PORT?: number;
         }
     }
 }
