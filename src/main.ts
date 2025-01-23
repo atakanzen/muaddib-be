@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
     FastifyAdapter,
@@ -6,8 +6,6 @@ import {
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-
-const port = process.env.PORT ?? 8080;
 
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
@@ -30,10 +28,14 @@ async function bootstrap() {
 
     // Validation
     app.useGlobalPipes(new ValidationPipe());
+    const port = process.env.PORT || 8080;
 
     await app.listen({
         port: port,
+        host: '0.0.0.0',
     });
+
+    Logger.log(`APP START LISTENING ON PORT: ${port}`);
 }
 
 bootstrap();

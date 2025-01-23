@@ -1,36 +1,46 @@
-# Stage 1: Build the application
-FROM node:lts-alpine AS builder
+# Stage 1: Build the application for development
+FROM node:lts-alpine AS development
 
 # Set working directory
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy application source code
-COPY . .
+COPY --chown=node:node . .
+
+USER node
 
 # Build the application
-RUN npm run build
 
-# Stage 2: Run the application
-FROM node:lts-alpine
+FROM node:lts-alpine as build
 
-# Set working directory
 WORKDIR /app
 
-# Copy only necessary files from the build stage
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
+COPY --chown=node:node package*.json ./
 
-# Install production dependencies only
-RUN npm install --production
+COPY --chown=node:node --from=development app/node_modules ./node_modules
 
-# Expose the application port
+COPY --chown=node:node . .
+
+RUN npm run build
+
+RUN npm ci --only=production && npm cache clean --force
+
+USER node
+
+# Stage 2: Run the application
+FROM node:lts-alpine as production
+
+# Copy the bundled code from the build stage to the production image
+COPY --chown=node:node --from=build app/node_modules ./node_modules
+COPY --chown=node:node --from=build app/dist ./dist
+
 EXPOSE 8080
 
-# Start the application in production mode
-CMD ["node", "dist/src/main"]
+# Start the server using the production build
+CMD [ "node", "dist/src/main.js" ]
