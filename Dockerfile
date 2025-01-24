@@ -38,9 +38,15 @@ FROM node:lts-alpine as production
 
 # Copy the bundled code from the build stage to the production image
 COPY --chown=node:node --from=build app/node_modules ./node_modules
+COPY --chown=node:node --from=build app/package.json ./package.json
 COPY --chown=node:node --from=build app/dist ./dist
+COPY --chown=node:node drizzle-*.config.ts ./
+COPY --chown=node:node src/database/schema ./src/database/schema
+COPY docker-entrypoint.sh ./
+
+RUN chmod +x docker-entrypoint.sh
 
 EXPOSE 8080
 
 # Start the server using the production build
-CMD [ "node", "dist/src/main.js" ]
+ENTRYPOINT [ "./docker-entrypoint.sh" ]
