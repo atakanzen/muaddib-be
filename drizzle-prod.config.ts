@@ -8,5 +8,6 @@ export default defineConfig({
         password: process.env.GCP_SQL_PWD,
         database: process.env.GCP_SQL_DB_NAME,
         host: process.env.GCP_SQL_INSTANCE_CONNECTION,
+        ssl: false,
     },
 });
