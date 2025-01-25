@@ -5,6 +5,7 @@ import {
     Inject,
     Injectable,
     NotFoundException,
+    UnauthorizedException,
 } from '@nestjs/common';
 import { and, desc, eq } from 'drizzle-orm';
 import { RawDecisionTree } from './types/decision-tree.types';
@@ -15,20 +16,24 @@ export class DecisionTreeService {
 
     async get({ userId, treeId }: { userId: number; treeId: string }) {
         const tree = await this.db.query.decisionTrees.findFirst({
-            where: and(
-                eq(decisionTrees.id, treeId),
-                eq(decisionTrees.userId, userId),
-            ),
+            where: eq(decisionTrees.id, treeId),
             columns: {
                 createdAt: true,
                 updatedAt: true,
                 name: true,
                 tree: true,
+                userId: true,
             },
         });
 
         if (tree === undefined) {
             throw new NotFoundException('Decision tree does not exist');
+        }
+
+        if (tree.userId !== userId) {
+            throw new UnauthorizedException(
+                'You do not have access to this decision tree.',
+            );
         }
 
         return tree;

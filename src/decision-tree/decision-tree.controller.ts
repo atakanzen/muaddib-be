@@ -8,6 +8,7 @@ import {
     HttpStatus,
     NotFoundException,
     Param,
+    ParseUUIDPipe,
     Patch,
     Post,
     Query,
@@ -26,7 +27,7 @@ export class DecisionTreeController {
     @HttpCode(HttpStatus.OK)
     @Get('get/:treeId')
     async getDecisionTree(
-        @Param('treeId') treeId: string,
+        @Param('treeId', ParseUUIDPipe) treeId: string,
         @AuthUser() user: AuthUser,
     ) {
         return await this.service.get({
@@ -65,7 +66,7 @@ export class DecisionTreeController {
     @Patch('update/:treeId')
     @UsePipes(new DecisionTreePipe({ required: false }))
     async updateDecisionTree(
-        @Param('treeId') treeId: string,
+        @Param('treeId', ParseUUIDPipe) treeId: string,
         @Body() dto: UpdateDecisionTreeDTO,
         @AuthUser() user: AuthUser,
     ) {
@@ -85,7 +86,7 @@ export class DecisionTreeController {
     @HttpCode(HttpStatus.OK)
     @Delete('delete/:treeId')
     async deleteDecisionTree(
-        @Param('treeId') treeId: string,
+        @Param('treeId', ParseUUIDPipe) treeId: string,
         @AuthUser() user: AuthUser,
     ) {
         const found = await this.service.delete({
