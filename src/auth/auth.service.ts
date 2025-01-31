@@ -5,6 +5,7 @@ import {
     BadRequestException,
     Inject,
     Injectable,
+    NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -44,6 +45,23 @@ export class AuthService {
             .returning();
 
         return inserted[0];
+    }
+
+    async deleteUser(userId: number) {
+        const foundUser = await this.db.query.users.findFirst({
+            where: eq(users.id, userId),
+            columns: {
+                id: true
+            }
+        });
+
+        if (foundUser === undefined) {
+            throw new NotFoundException(
+                'The user was not found.',
+            );
+        }
+
+        await this.db.delete(users).where(eq(users.id, userId));
     }
 
     async loginUser(username: string, password: string) {

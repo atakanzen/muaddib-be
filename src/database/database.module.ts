@@ -7,7 +7,7 @@ import { dbSchema } from './schema/_schema';
         DrizzlePGModule.registerAsync({
             tag: 'DB',
             useFactory() {
-                if (process.env.NODE_ENV === 'development') {
+                if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                     return {
                         pg: {
                             connection: 'client',
