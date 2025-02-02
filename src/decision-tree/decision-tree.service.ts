@@ -4,39 +4,51 @@ import {
     BadRequestException,
     Inject,
     Injectable,
-    NotFoundException,
-    UnauthorizedException,
+    InternalServerErrorException,
+    NotFoundException
 } from '@nestjs/common';
 import { and, desc, eq } from 'drizzle-orm';
 import { RawDecisionTree } from './types/decision-tree.types';
 
 @Injectable()
 export class DecisionTreeService {
-    constructor(@Inject('DB') private db: DBType) {}
+    constructor(@Inject('DB') private db: DBType) { }
 
-    async get({ userId, treeId }: { userId: number; treeId: string }) {
-        const tree = await this.db.query.decisionTrees.findFirst({
-            where: eq(decisionTrees.id, treeId),
-            columns: {
-                createdAt: true,
-                updatedAt: true,
-                name: true,
-                tree: true,
-                userId: true,
-            },
-        });
-
-        if (tree === undefined) {
-            throw new NotFoundException('Decision tree does not exist');
+    private async getTreeOrThrow({ userId, treeId, retreiveData = true }: { userId: number; treeId: string; retreiveData?: boolean }) {
+        try {
+            var tree = await this.db.query.decisionTrees.findFirst({
+                where: eq(decisionTrees.id, treeId),
+                columns: retreiveData ? {
+                    createdAt: true,
+                    updatedAt: true,
+                    tree: true,
+                    name: true,
+                    userId: true
+                } : { userId: true }
+            });
+        }
+        catch (e) {
+            if ((e as Error).message.includes('non-existent-id')) {
+                throw new NotFoundException();
+            }
+            throw new InternalServerErrorException();
         }
 
-        if (tree.userId !== userId) {
-            throw new UnauthorizedException(
-                'You do not have access to this decision tree.',
-            );
+        if (!tree || tree.userId !== userId) {
+            throw new NotFoundException('Decision tree with given id is not found');
         }
 
         return tree;
+    }
+
+    async get({ userId, treeId }: { userId: number; treeId: string }) {
+        return await this.getTreeOrThrow({ userId, treeId }) as {
+            userId: number;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+            tree: RawDecisionTree;
+        };
     }
 
     async list({
@@ -95,7 +107,9 @@ export class DecisionTreeService {
             );
         }
 
-        const affected = await this.db
+        await this.getTreeOrThrow({ userId, treeId, retreiveData: false });
+
+        await this.db
             .update(decisionTrees)
             .set(values)
             .where(
@@ -108,12 +122,12 @@ export class DecisionTreeService {
                 id: decisionTrees.id,
                 tree: decisionTrees.tree,
             });
-
-        return Boolean(affected.length);
     }
 
     async delete({ userId, treeId }: { userId: number; treeId: string }) {
-        const affected = await this.db
+        await this.getTreeOrThrow({ userId, treeId, retreiveData: false });
+
+        await this.db
             .delete(decisionTrees)
             .where(
                 and(
@@ -124,7 +138,5 @@ export class DecisionTreeService {
             .returning({
                 id: decisionTrees.id,
             });
-
-        return Boolean(affected.length);
     }
 }

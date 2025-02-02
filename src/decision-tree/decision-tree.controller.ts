@@ -70,17 +70,11 @@ export class DecisionTreeController {
         @Body() dto: UpdateDecisionTreeDTO,
         @AuthUser() user: AuthUser,
     ) {
-        const found = await this.service.update({
+        await this.service.update({
             userId: user.sub,
             treeId: treeId,
             values: dto,
         });
-
-        if (!found) {
-            throw new NotFoundException(
-                `Decision tree with id ${treeId} is not found`,
-            );
-        }
     }
 
     @HttpCode(HttpStatus.OK)
@@ -89,15 +83,9 @@ export class DecisionTreeController {
         @Param('treeId', ParseUUIDPipe) treeId: string,
         @AuthUser() user: AuthUser,
     ) {
-        const found = await this.service.delete({
+        await this.service.delete({
             userId: user.sub,
             treeId: treeId,
         });
-
-        if (!found) {
-            throw new NotFoundException(
-                `Decision tree with id ${treeId} is not found`,
-            );
-        }
     }
 }

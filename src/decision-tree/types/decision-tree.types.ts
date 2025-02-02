@@ -34,7 +34,9 @@ export enum DecisionTreeEdgeType {
 export type RawDecisionTreeEdge = {
     id: string;
     source: string;
+    sourceHandle?: string;
     target: string;
+    targetHandle?: string;
     animated?: boolean;
     data?: Record<string, unknown>;
     type?: DecisionTreeEdgeType;

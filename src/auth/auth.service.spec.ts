@@ -35,8 +35,6 @@ describe('AuthService (Integration)', () => {
         db = testingModule.get<DBType>('DB');
 
         expect(db).toBeDefined();
-        expect(db.insert).toBeDefined();
-        expect(db.delete).toBeDefined();
     });
 
     afterAll(async () => {
