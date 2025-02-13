@@ -1,6 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from '@/database/database.module';
 import { users } from '@/database/schema/users/users';
 import { eq } from 'drizzle-orm';
@@ -8,7 +8,7 @@ import argon2 from 'argon2';
 import { DBType } from '@/database/schema/_schema';
 import { ConfigModule } from '@nestjs/config';
 
-describe('AuthService (Integration)', () => {
+describe('AuthService', () => {
     let authService: AuthService;
     let db: DBType;
 

@@ -9,5 +9,5 @@ export const decisionTrees = pgTable('decision_trees', {
     createdAt: timestamp().notNull().defaultNow(),
     updatedAt: timestamp().notNull().defaultNow().$onUpdate(() => new Date()),
     name: text().notNull(),
-    tree: jsonb().notNull().$type<RawDecisionTree>(),  // TODO: Add $type
+    tree: jsonb().notNull().$type<RawDecisionTree>()
 });
